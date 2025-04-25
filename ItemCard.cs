@@ -3,11 +3,11 @@
     public class ItemCard : Card
     {
         // Constructors
-        public ItemCard() : this(0, 0, 1)
+        public ItemCard(string name) : this(name, 1, 0, 0)
         {
 
         }
-        public ItemCard(int health, int stamina, int staminaCost) : base(staminaCost)
+        public ItemCard(string name, int staminaCost, int health, int stamina) : base(name,staminaCost)
         {
             Health = health;
             Stamina = stamina;
