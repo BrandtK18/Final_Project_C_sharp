@@ -6,11 +6,11 @@
         private int damage;
 
         // Constructors
-        public WeaponCard() : this(1, 1)
+        public WeaponCard(string name) : this(name, 1, 1)
         {
 
         }
-        public WeaponCard(int staminaCost, int damage) : base(staminaCost)
+        public WeaponCard(string name, int staminaCost, int damage) : base(name, staminaCost)
         {
             Damage = damage;
         }
