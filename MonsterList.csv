@@ -1,0 +1,6 @@
+Name,Damage,Health,Difficulty
+Rat,1,10,1
+Goblin,3,15,2
+Wolf,5,20,3
+Orc,7,30,4
+Orge,10,50,5
