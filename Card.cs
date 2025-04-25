@@ -12,7 +12,7 @@
         }
         public Card(int staminaCost)
         {
-
+            StaminaCost = staminaCost;
         }
 
         // Methods
