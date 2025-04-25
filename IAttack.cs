@@ -1,6 +1,6 @@
 ﻿
 
-namespace Final_Project_C_
+namespace Game
 {
     public interface IAttack
     {
@@ -8,9 +8,9 @@ namespace Final_Project_C_
         {
             get;set;
         }
-        public void Attack(IDamageable d)
+        public void Attack()
         {
-            d.TakeDamage(Damage);
+            
         }
 
     }
