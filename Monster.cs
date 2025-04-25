@@ -1,7 +1,9 @@
 ﻿
 
-namespace Final_Project_C_
+namespace Game
 {
+
+
     public class Monster : IDamageable, IAttack
     {
         int difficulty;
@@ -53,6 +55,16 @@ namespace Final_Project_C_
                 }
                 damage = value;
             }
+        }
+
+        public void Attack(IDamageable a)
+        {
+            a.TakeDamage(Damage);
+        }
+
+        public void TakeDamage(int damage)
+        {
+             Health -= damage;
         }
 
     }
