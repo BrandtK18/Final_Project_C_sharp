@@ -2,6 +2,8 @@
 
 namespace Game
 {
+
+
     public class Monster : IDamageable, IAttack
     {
         int difficulty;
@@ -53,6 +55,16 @@ namespace Game
                 }
                 damage = value;
             }
+        }
+
+        public void Attack(IDamageable a)
+        {
+            a.TakeDamage(Damage);
+        }
+
+        public void TakeDamage(int damage)
+        {
+             Health -= damage;
         }
 
     }
