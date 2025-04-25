@@ -18,12 +18,12 @@
         // Methods
         public override void Use()
         {
-            Attack();
+            //Attack
         }
 
-        public void Attack()
+        public void Attack(IDamageable a)
         {
-            
+            a.TakeDamage(Damage);
         }
 
         // Properties

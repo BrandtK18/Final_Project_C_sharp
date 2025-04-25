@@ -8,6 +8,6 @@ namespace Game
         {
             get;set;
         }
-        void Attack();
+        void Attack(IDamageable a);
     }
 }
