@@ -9,7 +9,7 @@
         // Methods
         public override void Use()
         {
-            //Attack(Damage);
+            
         }
     }
 }

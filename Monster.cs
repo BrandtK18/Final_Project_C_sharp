@@ -1,6 +1,6 @@
 ﻿
 
-namespace Final_Project_C_
+namespace Game
 {
     public class Monster : IDamageable, IAttack
     {

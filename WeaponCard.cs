@@ -1,6 +1,6 @@
 ﻿namespace Game
 {
-    public class WeaponCard : Card//, IAttack
+    public class WeaponCard : Card, IAttack
     {
         // Fields
         private int damage;
@@ -18,7 +18,7 @@
         // Methods
         public override void Use()
         {
-            //Attack(Damage);
+            Attack(Damage);
         }
 
         // Properties
