@@ -18,7 +18,12 @@
         // Methods
         public override void Use()
         {
-            Attack(Damage);
+            Attack();
+        }
+
+        public void Attack()
+        {
+            
         }
 
         // Properties
