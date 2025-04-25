@@ -6,19 +6,34 @@
         List<Card> discard = new List<Card>();
         List<Card> hand = new List<Card>();
 
-        private static void DrawCards()
+        Random rand = new Random();
+        private static void DrawCard() //takes card from top of cards list and puts it into hand
         {
+            Card c = cards[cards.Size - 1];
+            hand.add(c);
+            cards.RemoveAt(cards.Size - 1);
 
         }
-        private static void Reshuffle()
+        private static void Reshuffle() //puts random discards back into cards
         {
-
+            while(cards.Size > 0)
+            {
+                DrawCard();
+            }
+            while(discard.Size > 0)
+            {
+                cards.Add(discard.Next(0,cards.Size));
+                discard.RemoveAt(Next(0,cards.Size));
+            }
         }
-        private static void DrawHand() //draws card 
+        private static void DrawHand()
         {
-
+            while(hand.Size < handSize)
+            {
+                DrawCard();
+            }
         }
-        private static void AddCard() //adds to top of cards list
+        private static void AddCard() //adds to cards list
         {
 
         }
