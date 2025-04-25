@@ -9,12 +9,14 @@ namespace Game
         int difficulty;
         int health;
         int damage;
+        string name;
 
-        public Monster(int difficulty, int health, int damage)
+        public Monster(string name, int difficulty, int health, int damage)
         {
             Difficulty = difficulty;
             Health = health;
             Damage = damage;
+            Name = name;
         }
 
         public int Difficulty
@@ -57,6 +59,19 @@ namespace Game
             }
         }
 
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentNullException(nameof(name));
+                }
+                name = value;
+            }
+        }
+
         public void Attack(IDamageable a)
         {
             a.TakeDamage(Damage);
@@ -64,7 +79,7 @@ namespace Game
 
         public void TakeDamage(int damage)
         {
-             Health -= damage;
+            Health -= damage;
         }
 
     }
