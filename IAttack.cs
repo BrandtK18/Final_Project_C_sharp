@@ -1,0 +1,17 @@
+﻿
+
+namespace Final_Project_C_
+{
+    public interface IAttack
+    {
+        public int Damage
+        {
+            get;set;
+        }
+        public void Attack(IDamageable d)
+        {
+            d.TakeDamage(Damage);
+        }
+
+    }
+}
