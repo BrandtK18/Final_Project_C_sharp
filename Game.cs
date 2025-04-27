@@ -19,13 +19,18 @@
 
             Display.PrintDisplay([p.PrintStats, p.PrintHand]);
 
-            // Combat system initialization
-            CombatSystem cs = new CombatSystem();
+            int i = int.Parse(Console.ReadLine());
+            p.PlayCard(i);
 
-            foreach (Monster e in cs.Enemies)
-            {
-                Console.WriteLine(e.Name);
-            }
+            Display.PrintDisplay([p.PrintStats, p.PrintHand]);
+
+            // Combat system initialization
+            //CombatSystem cs = new CombatSystem();
+
+            //foreach (Monster e in cs.Enemies)
+            //{
+            //    Console.WriteLine(e.Name);
+            //}
         }
     }
 }

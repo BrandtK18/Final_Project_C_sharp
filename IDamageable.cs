@@ -4,10 +4,11 @@ namespace Game
 {
     public interface IDamageable
     {
-        public int Health
+        int Health
         {
             get; set;
         }
-         void TakeDamage(int damage);
+        void ReceiveAttack(object sender, EventArgs e);
+        void TakeDamage(int damage);
     }
 }

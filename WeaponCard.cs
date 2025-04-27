@@ -1,9 +1,12 @@
 ﻿namespace Game
 {
-    public class WeaponCard : Card
+    public class WeaponCard : Card, IAttack
     {
         // Fields
         private int damage;
+
+        // Events
+        public event EventHandler SendAttack;
 
         // Constructors
         public WeaponCard(string name) : this(name, 1, 1)
@@ -19,12 +22,17 @@
         public override void Use()
         {
             Console.WriteLine("Use Weapon!");
-            //Attack
+            Attack();
         }
 
-        public void Attack(IDamageable a)
+        // IAttack
+        protected virtual void OnSendAttack(EventArgs e)
         {
-            a.TakeDamage(Damage);
+            SendAttack?.Invoke(this, e);
+        }
+        public void Attack()
+        {
+            OnSendAttack(new AttackArgs(Damage));
         }
 
         // Properties
