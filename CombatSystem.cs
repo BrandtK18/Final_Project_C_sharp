@@ -3,8 +3,13 @@
     public class CombatSystem
     {
         Monster[] enemies;
-        
-          public static int GetLineCount(string path)
+
+        public CombatSystem()
+        {
+            LoadMonster();
+        }
+
+        public static int GetLineCount(string path)
         {
             if (!File.Exists(path))
             {
@@ -20,16 +25,16 @@
             }
             return count;
         }
-       public void LoadMonster( Monster [] enemies)
+        public void LoadMonster()
         {
-            string path = "Monster List.csv";
-             enemies = new Monster[GetLineCount(path) - 1];
+            string path = "MonsterList.csv";
+            enemies = new Monster[GetLineCount(path) - 1];
 
             try
             {
                 using StreamReader sr = new StreamReader(path);
                 sr.ReadLine();
-                for(int i = 0;i < enemies.Length;i++)
+                for (int i = 0; i < enemies.Length; i++)
                 {
                     string line = sr.ReadLine();
                     string[] cols = line.Split(',');
@@ -44,12 +49,15 @@
             }
             catch
             {
-                Console.WriteLine("Error reading from file",path);
+                Console.WriteLine("Error reading from file", path);
                 return;
             }
 
         }
 
-
+        public Monster[] Enemies
+        {
+            get => enemies;
+        }
     }
 }

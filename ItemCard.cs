@@ -16,7 +16,7 @@
         // Methods
         public override void Use()
         {
-            
+            Console.WriteLine("Use Item!");
         }
         
         // Properties
