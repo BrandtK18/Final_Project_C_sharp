@@ -1,6 +1,6 @@
 ﻿namespace Game
 {
-    public class WeaponCard : Card, IAttack
+    public class WeaponCard : Card
     {
         // Fields
         private int damage;
