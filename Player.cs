@@ -9,7 +9,7 @@
         Random rand = new Random();
         private static void DrawCard() //takes card from top of cards list and puts it into hand
         {
-            Card c = cards[cards.Size - 1];
+            Card c = cards(cards.Size - 1);
             hand.add(c);
             cards.RemoveAt(cards.Size - 1);
 
@@ -22,8 +22,8 @@
             }
             while(discard.Size > 0)
             {
-                cards.Add(discard.Next(0,cards.Size));
-                discard.RemoveAt(Next(0,cards.Size));
+                cards.Add(discard.Next(0, cards.Size));
+                discard.RemoveAt(discard.Next(0,cards.Size));
             }
         }
         private static void DrawHand()
@@ -90,7 +90,7 @@
         }
         public int MonsterCount
         {
-            get => monsterCount;
+            get;
             set;
         }
     }
