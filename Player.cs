@@ -2,54 +2,63 @@
 {
     public class Player
     {
-        List<Card> cards = new List<Card>();
-        List<Card> discard = new List<Card>();
-        List<Card> hand = new List<Card>();
+        private List<Card> cards;
+        private List<Card> discard;
+        private List<Card> hand;
 
-        Random rand = new Random();
-        private static void DrawCard() //takes card from top of cards list and puts it into hand
-        {
-            Card c = cards(cards.Size - 1);
-            hand.add(c);
-            cards.RemoveAt(cards.Size - 1);
+        private Random rand = new Random();
+       
+        private int health;
+        private int stamina;
+        private int handSize; // same size as hand list
 
-        }
-        private static void Reshuffle() //puts random discards back into cards
-        {
-            while(cards.Size > 0)
-            {
-                DrawCard();
-            }
-            while(discard.Size > 0)
-            {
-                cards.Add(discard.Next(0, cards.Size));
-                discard.RemoveAt(discard.Next(0,cards.Size));
-            }
-        }
-        private static void DrawHand()
-        {
-            while(hand.Size < handSize)
-            {
-                DrawCard();
-            }
-        }
-        private static void AddCard() //adds to cards list
+        public Player() : this(10, 3, 3, 0)
         {
 
         }
-
-
-        int health;
-        int stamina;
-        int handSize; // same size as hand list
-        int monsterCount;
-
-        public Player()
+        public Player(int health, int stamina, int handSize, int monsterCount)
         {
             Health = health;
             Stamina = stamina;
             HandSize = handSize;
             MonsterCount = monsterCount;
+
+            cards = new List<Card>();
+            discard = new List<Card>();
+            hand = new List<Card>();
+        }
+
+        public void DrawCard() //takes card from top of cards list and puts it into hand
+        {
+            Card c = cards[cards.Count - 1];
+            hand.Add(c);
+            cards.RemoveAt(cards.Count - 1);
+
+        }
+        public void Reshuffle() //puts random discards back into cards
+        {
+            while (cards.Count > 0)
+            {
+                DrawCard();
+            }
+            while (discard.Count > 0)
+            {
+                int rand_index = rand.Next(0, discard.Count);
+                cards.Add(discard[rand_index]);
+                discard[rand_index] = discard[discard.Count - 1];
+                discard.RemoveAt(discard.Count - 1);
+            }
+        }
+        public void DrawHand()
+        {
+            while (hand.Count < handSize)
+            {
+                DrawCard();
+            }
+        }
+        public void AddCard(Card c) //adds to cards list
+        {
+            cards.Add(c);
         }
 
         public int Health
