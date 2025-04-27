@@ -8,6 +8,7 @@ namespace Game
         {
             get; set;
         }
-        void ReceiveAttack(object sender, AttackArgs e);
+        void ReceiveAttack(object sender, EventArgs e);
+        void TakeDamage(int damage);
     }
 }

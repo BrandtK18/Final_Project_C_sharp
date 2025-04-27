@@ -85,6 +85,11 @@
 
             stamina -= c.StaminaCost;
             
+            if (c is IAttack a)
+            {
+                a.SendAttack += ReceiveAttack;
+            }
+
             c.Use();
 
             DiscardCard(index);
@@ -112,12 +117,13 @@
             Reshuffle();
             DrawHand();
         }
-        
+
         // IDamagable
-        public void ReceiveAttack(object sender, AttackArgs e)
+        public void ReceiveAttack(object sender, EventArgs e)
         {
             Console.WriteLine("Attack Recieved");
-            TakeDamage(e.Damage);
+            if (e is AttackArgs a)
+                TakeDamage(a.Damage);
         }
         public void TakeDamage(int damage)
         {
