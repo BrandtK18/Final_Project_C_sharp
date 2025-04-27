@@ -1,6 +1,6 @@
 ﻿namespace Game
 {
-    public class Player
+    public class Player : IDamageable
     {
         private List<Card> cards;
         private List<Card> discard;
@@ -85,7 +85,7 @@
 
             stamina -= c.StaminaCost;
             
-            //c.Use();
+            c.Use();
 
             DiscardCard(index);
             return true;
@@ -97,7 +97,7 @@
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            //c.Discard();
+            hand[index].Discard();
 
             discard.Add(hand[index]);
             hand.RemoveAt(index);
@@ -113,6 +113,17 @@
             DrawHand();
         }
         
+        // IDamagable
+        public void ReceiveAttack(object sender, AttackArgs e)
+        {
+            Console.WriteLine("Attack Recieved");
+            TakeDamage(e.Damage);
+        }
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+        }
+
         #endregion
 
         #region Display Methods

@@ -11,6 +11,9 @@ namespace Game
         int damage;
         string name;
 
+        // Events
+        public event EventHandler SendAttack;
+
         public Monster(string name, int difficulty, int health, int damage)
         {
             Difficulty = difficulty;
@@ -72,11 +75,22 @@ namespace Game
             }
         }
 
-        public void Attack(IDamageable a)
+        // IAttack
+        protected virtual void OnSendAttack(EventArgs e)
         {
-            a.TakeDamage(Damage);
+            SendAttack?.Invoke(this, e);
+        }
+        public void Attack()
+        {
+            OnSendAttack(new AttackArgs(Damage));
         }
 
+        // IDamagable
+        public void ReceiveAttack(object sender, AttackArgs e)
+        {
+            Console.WriteLine("Attack Recieved");
+            TakeDamage(e.Damage);
+        }
         public void TakeDamage(int damage)
         {
             Health -= damage;
