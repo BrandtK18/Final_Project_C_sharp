@@ -7,19 +7,25 @@
         private List<Card> hand;
 
         private Random rand = new Random();
-       
+
+        private int healthMax;
         private int health;
+
+        private int staminaMax;
         private int stamina;
+
         private int handSize; // same size as hand list
 
         public Player() : this(10, 3, 3, 0)
         {
 
         }
-        public Player(int health, int stamina, int handSize, int monsterCount)
+        public Player(int healthMax, int staminaMax, int handSize, int monsterCount)
         {
-            Health = health;
-            Stamina = stamina;
+            HealthMax = healthMax;
+            Health = healthMax;
+            StaminaMax = staminaMax;
+            Stamina = staminaMax;
             HandSize = handSize;
             MonsterCount = monsterCount;
 
@@ -28,6 +34,7 @@
             hand = new List<Card>();
         }
 
+        #region Card Management Methods
         public void DrawCard() //takes card from top of cards list and puts it into hand
         {
             hand.Add(cards.Last());
@@ -59,6 +66,10 @@
         {
             cards.Add(c);
         }
+        
+        #endregion
+
+        #region Gameplay Methods
         public bool PlayCard(int index)
         {
             if (index >= hand.Count)
@@ -74,8 +85,7 @@
 
             stamina -= c.StaminaCost;
             
-            c.Use();
-            c.Discard();
+            //c.Use();
 
             DiscardCard(index);
             return true;
@@ -87,12 +97,29 @@
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
+            //c.Discard();
+
             discard.Add(hand[index]);
             hand.RemoveAt(index);
         }
+        public void EndTurn()
+        {
+            while(hand.Count > 0)
+            {
+                DiscardCard(0);
+            }
+            Stamina = StaminaMax;
+            Reshuffle();
+            DrawHand();
+        }
+        
+        #endregion
 
+        #region Display Methods
         public void PrintHand()
         {
+            Console.WriteLine("- Hand ----");
+
             int num = 0;
             hand.ForEach(c =>
             {
@@ -100,7 +127,25 @@
                 num++;
             });
         }
+        public void PrintStats()
+        {
+            Console.WriteLine($"HP: {health} | Stamina: {stamina}");
+        }
+        
+        #endregion
 
+        public int HealthMax
+        {
+            get => healthMax;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new Exception("Max Health cannot be negative");
+                }
+                healthMax = value;
+            }
+        }
         public int Health
         {
             get => health;
@@ -111,6 +156,10 @@
                     throw new Exception("Health cannot be negative");
                 }
                 health = value;
+                if (health > healthMax)
+                {
+                    health = healthMax;
+                }
             }
         }
         public int HandSize
@@ -125,6 +174,18 @@
                 handSize = value;
             }
         }
+        public int StaminaMax
+        {
+            get => staminaMax;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new Exception("Max Stamina cannot be negative");
+                }
+                staminaMax = value;
+            }
+        }
         public int Stamina
         {
             get => stamina;
@@ -135,6 +196,10 @@
                     throw new Exception("Stamina cannot be negative");
                 }
                 stamina = value;
+                if (stamina > staminaMax)
+                {
+                    stamina = staminaMax;
+                }
             }
         }
         public int MonsterCount

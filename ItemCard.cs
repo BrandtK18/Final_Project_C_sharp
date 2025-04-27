@@ -17,6 +17,8 @@
         public override void Use()
         {
             Console.WriteLine("Use Item!");
+            p.Health += Health;
+            p.Stamina += Stamina;
         }
         
         // Properties
