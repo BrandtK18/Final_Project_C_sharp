@@ -4,7 +4,26 @@
     {
         private static void Main()
         {
-            Console.WriteLine("Test");
+            Player p = new Player();
+
+            // Temporary card creation
+            WeaponCard w1 = new WeaponCard("Dagger", 1, 1);
+            p.AddCard(w1);
+            p.AddCard(w1);
+            p.AddCard(w1);
+            ItemCard i1 = new ItemCard("Apple", 1, 2, 0);
+            p.AddCard(i1);
+            p.AddCard(i1);
+
+            p.Reshuffle();
+
+            p.DrawHand();
+            p.PrintHand();
+
+            // Combat system initialization
+            CombatSystem cs = new CombatSystem();
+
+
         }
     }
 }

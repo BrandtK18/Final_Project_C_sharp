@@ -30,22 +30,21 @@
 
         public void DrawCard() //takes card from top of cards list and puts it into hand
         {
-            Card c = cards[cards.Count - 1];
-            hand.Add(c);
+            hand.Add(cards.Last());
             cards.RemoveAt(cards.Count - 1);
-
         }
         public void Reshuffle() //puts random discards back into cards
         {
             while (cards.Count > 0)
             {
-                DrawCard();
+                discard.Add(cards.Last());
+                cards.RemoveAt(cards.Count - 1);
             }
             while (discard.Count > 0)
             {
                 int rand_index = rand.Next(0, discard.Count);
                 cards.Add(discard[rand_index]);
-                discard[rand_index] = discard[discard.Count - 1];
+                discard[rand_index] = discard.Last();
                 discard.RemoveAt(discard.Count - 1);
             }
         }
@@ -60,6 +59,47 @@
         {
             cards.Add(c);
         }
+        public bool PlayCard(int index)
+        {
+            if (index >= hand.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            Card c = hand[index];
+            if (c.StaminaCost > stamina)
+            {
+                return false;
+            }
+
+            stamina -= c.StaminaCost;
+            
+            c.Use();
+            c.Discard();
+
+            DiscardCard(index);
+            return true;
+        }
+        public void DiscardCard(int index)
+        {
+            if (index >= hand.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            discard.Add(hand[index]);
+            hand.RemoveAt(index);
+        }
+
+        public void PrintHand()
+        {
+            int num = 0;
+            hand.ForEach(c =>
+            {
+                Console.WriteLine($"{num} | {c.Name} : {c.StaminaCost}");
+                num++;
+            });
+        }
 
         public int Health
         {
@@ -70,7 +110,7 @@
                 {
                     throw new Exception("Health cannot be negative");
                 }
-                value = health;
+                health = value;
             }
         }
         public int HandSize
@@ -82,7 +122,7 @@
                 {
                     throw new Exception("Cannot have less than 0 cards in hand");
                 }
-                value = handSize;
+                handSize = value;
             }
         }
         public int Stamina
@@ -94,7 +134,7 @@
                 {
                     throw new Exception("Stamina cannot be negative");
                 }
-                value = stamina;
+                stamina = value;
             }
         }
         public int MonsterCount
