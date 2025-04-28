@@ -24,13 +24,12 @@
 
             Display.PrintDisplay([p.PrintStats, p.PrintHand]);
 
-            // Combat system initialization
-            //CombatSystem cs = new CombatSystem();
+            CombatSystem cs = new CombatSystem();
 
-            //foreach (Monster e in cs.Enemies)
-            //{
-            //    Console.WriteLine(e.Name);
-            //}
+            foreach (Monster e in cs.Enemies)
+            {
+                Console.WriteLine(e.Name);
+            }
         }
     }
 }
