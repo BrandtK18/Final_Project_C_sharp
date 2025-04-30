@@ -1,4 +1,7 @@
-﻿namespace Game
+﻿using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
+
+namespace Game
 {
     public class CombatSystem
     {
@@ -96,12 +99,18 @@
                         }
 
                         int cardIndex = int.Parse(input);
+                        string logString;
 
-                        if (!p.PlayCard(cardIndex))
+                        if (!p.PlayCard(cardIndex, out logString))
                         {
                             Console.WriteLine("You don't have enough stamina to play that card");
                             Display.AwaitInput();
                             continue;
+                        }
+
+                        if (logString != "")
+                        {
+                            log.Add(logString);
                         }
 
                         if (p.CurrentMonster.Health <= 0)
@@ -128,7 +137,7 @@
 
                 Console.Clear();
                 p.CurrentMonster.Attack();
-                log.Add("test");
+                log.Add($"{p.CurrentMonster.Name} attacked for {p.CurrentMonster.Damage} damage!");
                 Display.AwaitInput();
 
                 #endregion
@@ -138,6 +147,9 @@
             p.CurrentMonster.SendAttack -= p.ReceiveAttack;
 
             p.CurrentMonster = null;
+
+            // Clear log
+            log.Clear();
 
             // Display
             Console.Clear();

@@ -1,4 +1,6 @@
-﻿namespace Game
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace Game
 {
     public class Player : IDamageable
     {
@@ -70,7 +72,7 @@
         #endregion
 
         #region Gameplay Methods
-        public bool PlayCard(int index)
+        public bool PlayCard(int index, out string logString)
         {
             if (index >= hand.Count)
             {
@@ -80,18 +82,26 @@
             Card c = hand[index];
             if (c.StaminaCost > stamina)
             {
+                logString = "";
                 return false;
             }
 
             stamina -= c.StaminaCost;
             
-            if (c is IAttack a)
+            if (c is WeaponCard a)
             {
                 if (CurrentMonster != null)
                     a.SendAttack += CurrentMonster.ReceiveAttack;
+
+                logString = $"You did {a.Damage} damage with your {a.Name}";
+            }
+            else
+            {
+                logString = "";
             }
 
             c.Use();
+            
 
             DiscardCard(index);
             return true;
