@@ -2,14 +2,19 @@
 {
     public class CombatSystem
     {
-        Monster[] enemies;
+        private Monster[] enemies;
+        private Random rand = new Random();
+
+        private List<string> log;
 
         public CombatSystem()
         {
             LoadMonster();
+
+            log = new List<string>();
         }
 
-        public static int GetLineCount(string path)
+        private static int GetLineCount(string path)
         {
             if (!File.Exists(path))
             {
@@ -54,6 +59,122 @@
             }
 
         }
+
+        // Combat Specific Methods
+        public void StartCombat(Player p)
+        {
+            // Selecting the monster
+            int difficulty = 1;
+
+            Monster[] difficultyArray = enemies.Where(m => m.Difficulty == difficulty).ToArray();
+            int randIndex = rand.Next(0, difficultyArray.Length);
+            
+            p.CurrentMonster = difficultyArray[randIndex];
+
+            // Connecting signals
+            p.CurrentMonster.SendAttack += p.ReceiveAttack;
+            
+            p.EndTurn();
+
+            for (; ; )
+            {
+                #region Players turn
+
+                for (; ; )
+                {
+                    Console.Clear();
+                    Display.PrintDisplay([DisplayShortLog, Display.EmptyLine, p.CurrentMonster.PrintStats, Display.EmptyLine, p.PrintStats, p.PrintHand]);
+                    Console.Write("Enter the index of the card you want to play (e -> end turn): ");
+
+                    try
+                    {
+                        string input = Console.ReadLine().ToLower();
+                        if (input == "e")
+                        {
+                            p.EndTurn();
+                            break;
+                        }
+
+                        int cardIndex = int.Parse(input);
+
+                        if (!p.PlayCard(cardIndex))
+                        {
+                            Console.WriteLine("You don't have enough stamina to play that card");
+                            Display.AwaitInput();
+                            continue;
+                        }
+
+                        if (p.CurrentMonster.Health <= 0)
+                        {
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input entered");
+                        Display.AwaitInput();
+                        continue;
+                    }
+                }
+
+                #endregion
+
+                if (p.CurrentMonster.Health <= 0)
+                {
+                    break;
+                }
+
+                #region Monsters Turn
+
+                Console.Clear();
+                p.CurrentMonster.Attack();
+                log.Add("test");
+                Display.AwaitInput();
+
+                #endregion
+            }
+
+            // Disconnecting signals
+            p.CurrentMonster.SendAttack -= p.ReceiveAttack;
+
+            p.CurrentMonster = null;
+
+            // Display
+            Console.Clear();
+            Console.WriteLine("You defeated the monster!");
+            Display.AwaitInput();
+
+            // Loot stuff
+        }
+
+        #region Display Methods
+        public void DisplayShortLog()
+        {
+            (int, int) oldCursor = Console.GetCursorPosition();
+
+            Console.WriteLine("= Log ====================");
+            Console.SetCursorPosition(oldCursor.Item1, oldCursor.Item2 + 6);
+            Console.WriteLine("==========================");
+            Console.SetCursorPosition(oldCursor.Item1, oldCursor.Item2 + 1);
+
+            if (log.Count <= 5)
+            {
+                log.Reverse<string>()
+                    .ToList()
+                    .ForEach(Console.WriteLine);
+            }
+            else
+            {
+                log.Reverse<string>()
+                    .Take(5)
+                    .ToList()
+                    .ForEach(Console.WriteLine);
+            }
+
+            Console.SetCursorPosition(oldCursor.Item1, oldCursor.Item2 + 6);
+        }
+
+        #endregion
 
         public Monster[] Enemies
         {

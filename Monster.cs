@@ -31,7 +31,7 @@ namespace Game
                 {
                     throw new ArgumentOutOfRangeException(nameof(difficulty));
                 }
-
+                difficulty = value;
             }
         }
         public int Health
@@ -39,12 +39,7 @@ namespace Game
             get => health;
             set
             {
-
                 health = value;
-                if (health <= 0)
-                {
-                    //this is for if the monster dies..
-                }
             }
 
         }
@@ -75,6 +70,14 @@ namespace Game
             }
         }
 
+        #region Display Methods
+        public void PrintStats()
+        {
+            Console.WriteLine($"{Name} : {Health} / {Damage}");
+        }
+
+        #endregion
+
         // IAttack
         protected virtual void OnSendAttack(EventArgs e)
         {
@@ -82,13 +85,13 @@ namespace Game
         }
         public void Attack()
         {
+            Console.WriteLine($"{Name} attacked for {Damage} damage!");
             OnSendAttack(new AttackArgs(Damage));
         }
 
         // IDamagable
         public void ReceiveAttack(object sender, EventArgs e)
         {
-            Console.WriteLine("Attack Recieved");
             if (e is AttackArgs a)
                 TakeDamage(a.Damage);
         }

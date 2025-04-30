@@ -87,7 +87,8 @@
             
             if (c is IAttack a)
             {
-                a.SendAttack += ReceiveAttack;
+                if (CurrentMonster != null)
+                    a.SendAttack += CurrentMonster.ReceiveAttack;
             }
 
             c.Use();
@@ -100,6 +101,12 @@
             if (index >= hand.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            if (hand[index] is IAttack a)
+            {
+                if (CurrentMonster != null)
+                    a.SendAttack -= CurrentMonster.ReceiveAttack;
             }
 
             hand[index].Discard();
@@ -121,7 +128,6 @@
         // IDamagable
         public void ReceiveAttack(object sender, EventArgs e)
         {
-            Console.WriteLine("Attack Recieved");
             if (e is AttackArgs a)
                 TakeDamage(a.Damage);
         }
@@ -224,5 +230,6 @@
             get;
             set;
         }
+        public Monster CurrentMonster { get; set; }
     }
 }

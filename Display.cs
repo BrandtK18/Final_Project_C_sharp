@@ -9,5 +9,16 @@
                 actions[i].Invoke();
             }
         }
+
+        public static void AwaitInput()
+        {
+            Console.WriteLine("(Press Enter to continue)");
+            Console.ReadLine();
+        }
+
+        public static void EmptyLine()
+        {
+            Console.WriteLine();
+        }
     }
 }
