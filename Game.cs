@@ -15,21 +15,9 @@
             p.AddCard(i1);
             p.AddCard(i1);
 
-            p.EndTurn();
-
-            Display.PrintDisplay([p.PrintStats, p.PrintHand]);
-
-            int i = int.Parse(Console.ReadLine());
-            p.PlayCard(i);
-
-            Display.PrintDisplay([p.PrintStats, p.PrintHand]);
-
             CombatSystem cs = new CombatSystem();
 
-            foreach (Monster e in cs.Enemies)
-            {
-                Console.WriteLine(e.Name);
-            }
+            cs.StartCombat(p);
         }
     }
 }

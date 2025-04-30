@@ -1,4 +1,6 @@
-﻿namespace Game
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace Game
 {
     public class Player : IDamageable
     {
@@ -70,7 +72,7 @@
         #endregion
 
         #region Gameplay Methods
-        public bool PlayCard(int index)
+        public bool PlayCard(int index, out string logString)
         {
             if (index >= hand.Count)
             {
@@ -80,17 +82,26 @@
             Card c = hand[index];
             if (c.StaminaCost > stamina)
             {
+                logString = "";
                 return false;
             }
 
             stamina -= c.StaminaCost;
             
-            if (c is IAttack a)
+            if (c is WeaponCard a)
             {
-                a.SendAttack += ReceiveAttack;
+                if (CurrentMonster != null)
+                    a.SendAttack += CurrentMonster.ReceiveAttack;
+
+                logString = $"You did {a.Damage} damage with your {a.Name}";
+            }
+            else
+            {
+                logString = "";
             }
 
             c.Use();
+            
 
             DiscardCard(index);
             return true;
@@ -100,6 +111,12 @@
             if (index >= hand.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            if (hand[index] is IAttack a)
+            {
+                if (CurrentMonster != null)
+                    a.SendAttack -= CurrentMonster.ReceiveAttack;
             }
 
             hand[index].Discard();
@@ -121,7 +138,6 @@
         // IDamagable
         public void ReceiveAttack(object sender, EventArgs e)
         {
-            Console.WriteLine("Attack Recieved");
             if (e is AttackArgs a)
                 TakeDamage(a.Damage);
         }
@@ -224,5 +240,6 @@
             get;
             set;
         }
+        public Monster CurrentMonster { get; set; }
     }
 }
