@@ -87,13 +87,19 @@ namespace Game
             }
 
             stamina -= c.StaminaCost;
-            
+
             if (c is WeaponCard a)
             {
                 if (CurrentMonster != null)
                     a.SendAttack += CurrentMonster.ReceiveAttack;
 
                 logString = $"You did {a.Damage} damage with your {a.Name}";
+            }
+            else if (c is ItemCard i)
+            {
+                Health += i.Health;
+                Stamina += i.Stamina;
+                logString = $"You used a {i.Name} to gain {i.Health} health and {i.Stamina} stamina";
             }
             else
             {
@@ -162,7 +168,7 @@ namespace Game
         }
         public void PrintStats()
         {
-            Console.WriteLine($"HP: {health} | Stamina: {stamina}");
+            Console.WriteLine($"HP: {health}/{healthMax} | Stamina: {stamina}/{staminaMax}");
         }
         
         #endregion

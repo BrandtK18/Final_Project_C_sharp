@@ -21,7 +21,6 @@
         // Methods
         public override void Use()
         {
-            Console.WriteLine("Use Weapon!");
             Attack();
         }
 
