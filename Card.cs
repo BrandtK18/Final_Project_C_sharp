@@ -8,15 +8,16 @@
         private int staminaCost;
         
         // Constructors
-        public Card(string name) : this(name, 1, "")
+        public Card(string name) : this(name, 1, "No Description", Rarity.Common)
         {
 
         }
-        public Card(string name, int staminaCost, string description)
+        public Card(string name, int staminaCost, string description, Rarity rarity)
         {
             Name = name;
             StaminaCost = staminaCost;
             Description = description;
+            Rarity = rarity;
         }
 
         // Methods
@@ -63,5 +64,6 @@
                 staminaCost = value;
             }
         }
+        public Rarity Rarity { get; set; }
     }
 }

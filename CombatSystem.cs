@@ -21,26 +21,11 @@ namespace Game
             this.p = p;
         }
 
-        private static int GetLineCount(string path)
-        {
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("file does not exist at:" + Path.GetFullPath(path));
-                throw new FileNotFoundException("cannot find file", path);
-            }
-            int count = 0;
-            using StreamReader sr = new StreamReader(path);
-            while (!sr.EndOfStream)
-            {
-                sr.ReadLine();
-                count++;
-            }
-            return count;
-        }
+        
         public void LoadMonster()
         {
             string path = "MonsterList.csv";
-            enemies = new Monster[GetLineCount(path) - 1];
+            enemies = new Monster[Game.GetLineCount(path) - 1];
 
             try
             {
