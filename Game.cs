@@ -18,9 +18,9 @@
             p.AddCard(i2);
             p.AddCard(i2);
 
-            CombatSystem cs = new CombatSystem();
+            CombatSystem cs = new CombatSystem(p);
 
-            cs.StartCombat(p);
+            cs.StartCombat();
         }
     }
 }
