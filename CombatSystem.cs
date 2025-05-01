@@ -11,16 +11,16 @@ namespace Game
         private List<string> log;
 
         private Player p;
-        //private Loot lootSystem = new Loot();
+        private Loot lootSystem;
 
-        public CombatSystem(Player p)
+        public CombatSystem(Player p, Loot lootSystem)
         {
             LoadMonster();
 
             log = new List<string>();
             this.p = p;
+            this.lootSystem = lootSystem;
         }
-
         
         public void LoadMonster()
         {
@@ -72,6 +72,11 @@ namespace Game
             for (; ; )
             {
                 #region Players turn
+
+                if (p.Health <= 0) // If the player dies
+                {
+                    break;
+                }
 
                 for (; ; )
                 {
@@ -137,7 +142,7 @@ namespace Game
 
                 #endregion
 
-                if (p.CurrentMonster.Health <= 0)
+                if (p.CurrentMonster.Health <= 0) // If the monster dies
                 {
                     break;
                 }
@@ -157,6 +162,13 @@ namespace Game
 
             p.CurrentMonster = null;
 
+            if (p.Health <= 0) // If the player dies
+            {
+                return;
+            }
+
+            p.MonsterCount += 1;
+
             // Clear log
             log.Clear();
 
@@ -165,7 +177,8 @@ namespace Game
             Console.WriteLine("You defeated the monster!");
             Display.AwaitInput();
 
-            // Loot stuff
+            // Loot generation
+            lootSystem.GenerateLoot();
         }
 
         #region Display Methods

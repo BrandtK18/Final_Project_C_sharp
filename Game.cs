@@ -22,22 +22,25 @@
         private static void Main()
         {
             Player p = new Player();
+            Loot lootSystem = new Loot(p);
+            CombatSystem cs = new CombatSystem(p, lootSystem);
 
-            // Temporary card creation
-            //WeaponCard w1 = new WeaponCard("Dagger", 1, 1, "Attacks the enemy for 1 damage");
-            //p.AddCard(w1);
-            //p.AddCard(w1);
-            //p.AddCard(w1);
-            //ItemCard i1 = new ItemCard("Apple", 2, 2, 0, "Heals you for 2 HP");
-            //p.AddCard(i1);
-            //p.AddCard(i1);
-            //ItemCard i2 = new ItemCard("Mango", 0, 0, 1, "Gives you 1 stamina");
-            //p.AddCard(i2);
-            //p.AddCard(i2);
+            lootSystem.DirectGainCard(0); // Dagger
+            lootSystem.DirectGainCard(0); // Dagger
+            lootSystem.DirectGainCard(0); // Dagger
+            lootSystem.DirectGainCard(5); // Apple
+            lootSystem.DirectGainCard(5); // Apple
+            lootSystem.DirectGainCard(6); // Mango
+            lootSystem.DirectGainCard(6); // Mango
 
-            CombatSystem cs = new CombatSystem(p);
+            while (p.Health > 0)
+            {
+                cs.StartCombat();
+            }
 
-            cs.StartCombat();
+            Console.Clear();
+            Console.WriteLine("You Died!");
+            Display.AwaitInput();
         }
     }
 }
