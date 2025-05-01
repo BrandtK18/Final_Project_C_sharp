@@ -10,11 +10,15 @@ namespace Game
 
         private List<string> log;
 
-        public CombatSystem()
+        private Player p;
+        private Loot lootSystem = new Loot();
+
+        public CombatSystem(Player p)
         {
             LoadMonster();
 
             log = new List<string>();
+            this.p = p;
         }
 
         private static int GetLineCount(string path)
@@ -64,7 +68,7 @@ namespace Game
         }
 
         // Combat Specific Methods
-        public void StartCombat(Player p)
+        public void StartCombat()
         {
             // Selecting the monster
             int difficulty = 1;
