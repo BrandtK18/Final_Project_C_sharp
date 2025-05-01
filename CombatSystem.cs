@@ -11,7 +11,7 @@ namespace Game
         private List<string> log;
 
         private Player p;
-        private Loot lootSystem = new Loot();
+        //private Loot lootSystem = new Loot();
 
         public CombatSystem(Player p)
         {
@@ -81,6 +81,7 @@ namespace Game
             // Connecting signals
             p.CurrentMonster.SendAttack += p.ReceiveAttack;
             
+            p.Reshuffle();
             p.EndTurn();
 
             for (; ; )
@@ -91,7 +92,8 @@ namespace Game
                 {
                     Console.Clear();
                     Display.PrintDisplay([DisplayShortLog, Display.EmptyLine, p.CurrentMonster.PrintStats, Display.EmptyLine, p.PrintStats, p.PrintHand]);
-                    Console.Write("Enter the index of the card you want to play (e -> end turn): ");
+                    Console.WriteLine("e -> end turn | i <index> -> card info | a -> show all cards left in deck");
+                    Console.Write("Enter the index of the card you want to play OR menu option: ");
 
                     try
                     {
@@ -100,6 +102,24 @@ namespace Game
                         {
                             p.EndTurn();
                             break;
+                        }
+                        else if (input == "a")
+                        {
+                            Console.Clear();
+                            p.PrintDeck();
+                            Display.AwaitInput();
+                            continue;
+                        }
+                        else if (input[0] == 'i')
+                        {
+                            string[] values = input.Split(' ');
+                            int index = int.Parse(values[1]);
+
+                            Console.Clear();
+                            p.PrintCardDescription(index);
+                            Display.AwaitInput();
+
+                            continue;
                         }
 
                         int cardIndex = int.Parse(input);

@@ -4,18 +4,19 @@
     {
         // Fields
         private string name;
-        private string[] description;
+        private string description;
         private int staminaCost;
         
         // Constructors
-        public Card(string name) : this(name, 1)
+        public Card(string name) : this(name, 1, "")
         {
 
         }
-        public Card(string name, int staminaCost)
+        public Card(string name, int staminaCost, string description)
         {
             Name = name;
             StaminaCost = staminaCost;
+            Description = description;
         }
 
         // Methods
@@ -36,6 +37,18 @@
                     throw new ArgumentNullException(nameof(Name), "Name cannot be null or empty");
                 }
                 name = value;
+            }
+        }
+        public string Description
+        {
+            get => description;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentNullException(nameof(Description), "Description cannot be null or empty");
+                }
+                description = value;
             }
         }
         public int StaminaCost

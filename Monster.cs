@@ -73,7 +73,7 @@ namespace Game
         #region Display Methods
         public void PrintStats()
         {
-            Console.WriteLine($"{Name} : {Health} / {Damage}");
+            Console.WriteLine($"{Name} | HP: {Health} / DMG: {Damage}");
         }
 
         #endregion
