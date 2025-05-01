@@ -9,11 +9,11 @@
         public event EventHandler SendAttack;
 
         // Constructors
-        public WeaponCard(string name) : this(name, 1, 1, "")
+        public WeaponCard(string name) : this(name, 1, "No Description", Rarity.Common, 1)
         {
 
         }
-        public WeaponCard(string name, int staminaCost, int damage, string description) : base(name, staminaCost, description)
+        public WeaponCard(string name, int staminaCost, string description, Rarity rarity, int damage) : base(name, staminaCost, description, rarity)
         {
             Damage = damage;
         }

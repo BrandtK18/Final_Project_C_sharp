@@ -11,36 +11,21 @@ namespace Game
         private List<string> log;
 
         private Player p;
-        //private Loot lootSystem = new Loot();
+        private Loot lootSystem;
 
-        public CombatSystem(Player p)
+        public CombatSystem(Player p, Loot lootSystem)
         {
             LoadMonster();
 
             log = new List<string>();
             this.p = p;
+            this.lootSystem = lootSystem;
         }
-
-        private static int GetLineCount(string path)
-        {
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("file does not exist at:" + Path.GetFullPath(path));
-                throw new FileNotFoundException("cannot find file", path);
-            }
-            int count = 0;
-            using StreamReader sr = new StreamReader(path);
-            while (!sr.EndOfStream)
-            {
-                sr.ReadLine();
-                count++;
-            }
-            return count;
-        }
+        
         public void LoadMonster()
         {
             string path = "MonsterList.csv";
-            enemies = new Monster[GetLineCount(path) - 1];
+            enemies = new Monster[Game.GetLineCount(path) - 1];
 
             try
             {
@@ -87,6 +72,11 @@ namespace Game
             for (; ; )
             {
                 #region Players turn
+
+                if (p.Health <= 0) // If the player dies
+                {
+                    break;
+                }
 
                 for (; ; )
                 {
@@ -152,7 +142,7 @@ namespace Game
 
                 #endregion
 
-                if (p.CurrentMonster.Health <= 0)
+                if (p.CurrentMonster.Health <= 0) // If the monster dies
                 {
                     break;
                 }
@@ -172,6 +162,13 @@ namespace Game
 
             p.CurrentMonster = null;
 
+            if (p.Health <= 0) // If the player dies
+            {
+                return;
+            }
+
+            p.MonsterCount += 1;
+
             // Clear log
             log.Clear();
 
@@ -180,7 +177,8 @@ namespace Game
             Console.WriteLine("You defeated the monster!");
             Display.AwaitInput();
 
-            // Loot stuff
+            // Loot generation
+            lootSystem.GenerateLoot();
         }
 
         #region Display Methods
