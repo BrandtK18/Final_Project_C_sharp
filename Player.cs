@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace Game
+﻿namespace Game
 {
     public class Player : IDamageable
     {
@@ -39,6 +37,11 @@ namespace Game
         #region Card Management Methods
         public void DrawCard() //takes card from top of cards list and puts it into hand
         {
+            if (cards.Count <= 0)
+            {
+                Reshuffle();
+            }
+
             hand.Add(cards.Last());
             cards.RemoveAt(cards.Count - 1);
         }
@@ -48,6 +51,10 @@ namespace Game
             {
                 discard.Add(cards.Last());
                 cards.RemoveAt(cards.Count - 1);
+            }
+            while (hand.Count > 0)
+            {
+                DiscardCard(0);
             }
             while (discard.Count > 0)
             {
@@ -68,7 +75,7 @@ namespace Game
         {
             cards.Add(c);
         }
-        
+
         #endregion
 
         #region Gameplay Methods
@@ -107,7 +114,7 @@ namespace Game
             }
 
             c.Use();
-            
+
 
             DiscardCard(index);
             return true;
@@ -132,12 +139,11 @@ namespace Game
         }
         public void EndTurn()
         {
-            while(hand.Count > 0)
+            while (hand.Count > 0)
             {
                 DiscardCard(0);
             }
             Stamina = StaminaMax;
-            Reshuffle();
             DrawHand();
         }
 
@@ -170,7 +176,39 @@ namespace Game
         {
             Console.WriteLine($"HP: {health}/{healthMax} | Stamina: {stamina}/{staminaMax}");
         }
-        
+        public void PrintDeck()
+        {
+            Dictionary<Card, int> frequency = new Dictionary<Card, int>();
+            for (int i = 0; i < cards.Count; i++)
+            {
+                if (frequency.ContainsKey(cards[i]))
+                {
+                    frequency[cards[i]] += 1;
+                }
+                else
+                {
+                    frequency.Add(cards[i], 1);
+                }
+            }
+
+            Console.WriteLine("- Cards left in Deck ----");
+            foreach (KeyValuePair<Card, int> kvp in frequency)
+            {
+                Console.WriteLine($"{kvp.Key.Name} ( x{kvp.Value} )");
+            }
+            Console.WriteLine("-------------------------");
+        }
+        public void PrintCardDescription(int index)
+        {
+            if (index >= hand.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            Console.WriteLine("- Description ----");
+            Console.WriteLine($"{hand[index].Name} : {hand[index].Description}");
+        }
+
         #endregion
 
         public int HealthMax
@@ -190,7 +228,7 @@ namespace Game
             get => health;
             set
             {
-                if(value < 0)
+                if (value < 0)
                 {
                     throw new Exception("Health cannot be negative");
                 }

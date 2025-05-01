@@ -4,8 +4,8 @@ namespace Game
 {
     public class Loot
     {
-        ItemCard healthPot = new ItemCard("Health Potion", 1, 5, 0);
-        ItemCard staminaPot = new ItemCard("Stamina Potion", 1, 0, 5);
+        ItemCard healthPot = new ItemCard("Health Potion", 1, 5, 0, "");
+        ItemCard staminaPot = new ItemCard("Stamina Potion", 1, 0, 5, "");
         Loot k = new Loot();
         Player f = new Player(); //dont have access to player 'p' used in main
         public void LootChoice(int c)
