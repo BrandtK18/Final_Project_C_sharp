@@ -64,9 +64,36 @@ namespace Game
             }
         }
         
-        public void GenerateLoot()
+        public void GenerateLoot(Monster m)
         {
+            List<Card> cards = new List<Card>(AllCards);
+            
             // Generate the loot table using the Card array and Rarity Enum (I would recommend using LINQ for selecting / sorting by rarity etc.)
+            if (m.Difficulty < 2)
+            {
+                cards.OrderBy(s => s.Rarity)
+                    .Take(3)
+                    .ToList()
+                    .ForEach(p.AddCard);
+
+            }
+            else if(m.Difficulty >= 2 && m.Difficulty < 5)
+            {
+                cards.OrderByDescending(c => c.Rarity)
+                  
+                  .Take(3)
+                  .ToList()
+                  .ForEach(p.AddCard);
+            }
+            else
+            {
+                cards.OrderByDescending(c => c.Rarity)
+
+                  .Take(3)
+                  .ToList()
+                  .ForEach(p.AddCard);
+
+            }
             // I would say randomly (with rarities in mind) pick 3 cards for the user to choose from
 
 
@@ -74,7 +101,7 @@ namespace Game
 
 
             // Then add that card to the players deck (Don't use the DirectGainCard Method use p.AddCard instead)
-            
+
         }
         public void DirectGainCard(int card_index) // THIS IS FOR GIVING THE PLAYER THEIR INITIAL STARTING CARDS
         {
