@@ -1,5 +1,6 @@
 ﻿using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Game
 {
@@ -9,7 +10,7 @@ namespace Game
         private Random rand = new Random();
 
         private List<string> log;
-
+        
         private Player p;
         private Loot lootSystem;
 
@@ -65,7 +66,7 @@ namespace Game
 
             // Connecting signals
             p.CurrentMonster.SendAttack += p.ReceiveAttack;
-            
+            Monster current = p.CurrentMonster;
             p.Reshuffle();
             p.EndTurn();
 
@@ -178,7 +179,7 @@ namespace Game
             Display.AwaitInput();
 
             // Loot generation
-            lootSystem.GenerateLoot();
+            lootSystem.GenerateLoot(current);
         }
 
         #region Display Methods
