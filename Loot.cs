@@ -1,8 +1,4 @@
-﻿
-
-using System.IO;
-
-namespace Game
+﻿namespace Game
 {
     public class Loot
     {
@@ -63,27 +59,89 @@ namespace Game
                 return;
             }
         }
-        
+
         public void GenerateLoot(Monster m)
         {
             List<Card> cards = new List<Card>(AllCards);
-            
+            bool isTrue = false;
+            int input;
+            int track = 1;
+            List<Card> choices = new List<Card>();
+            Console.WriteLine("Here are your loot choices, choose one:");
             // Generate the loot table using the Card array and Rarity Enum (I would recommend using LINQ for selecting / sorting by rarity etc.)
             if (m.Difficulty < 2)
             {
                 cards.OrderBy(s => s.Rarity)
                     .Take(3)
                     .ToList()
-                    .ForEach(p.AddCard);
+                    .ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
+                choices = cards;
+
+
+                while (isTrue == false)
+                {
+                    input = int.Parse(Console.ReadLine());
+
+                    if (input == 1)
+                    {
+                        p.AddCard(choices.ElementAt(0));
+                        isTrue = true;
+
+                    }
+                    else if (input == 2)
+                    {
+                        p.AddCard(choices.ElementAt(1));
+                        isTrue = true;
+                    }
+                    else if (input == 3)
+                    {
+                        p.AddCard(choices.ElementAt(2));
+                        isTrue = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input! Please choose again.");
+                    }
+                }
+
+
 
             }
-            else if(m.Difficulty >= 2 && m.Difficulty < 5)
+            else if (m.Difficulty >= 2 && m.Difficulty < 5)
             {
                 cards.OrderByDescending(c => c.Rarity)
-                  
+
                   .Take(3)
                   .ToList()
-                  .ForEach(p.AddCard);
+                  .ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
+                choices = cards;
+
+
+                while (isTrue == false)
+                {
+                    input = int.Parse(Console.ReadLine());
+
+                    if (input == 1)
+                    {
+                        p.AddCard(choices.ElementAt(0));
+                        isTrue = true;
+
+                    }
+                    else if (input == 2)
+                    {
+                        p.AddCard(choices.ElementAt(1));
+                        isTrue = true;
+                    }
+                    else if (input == 3)
+                    {
+                        p.AddCard(choices.ElementAt(2));
+                        isTrue = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input! Please choose again.");
+                    }
+                }
             }
             else
             {
@@ -91,7 +149,35 @@ namespace Game
 
                   .Take(3)
                   .ToList()
-                  .ForEach(p.AddCard);
+                  .ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
+                choices = cards;
+
+
+                while (isTrue == false)
+                {
+                    input = int.Parse(Console.ReadLine());
+
+                    if (input == 1)
+                    {
+                        p.AddCard(choices.ElementAt(0));
+                        isTrue = true;
+
+                    }
+                    else if (input == 2)
+                    {
+                        p.AddCard(choices.ElementAt(1));
+                        isTrue = true;
+                    }
+                    else if (input == 3)
+                    {
+                        p.AddCard(choices.ElementAt(2));
+                        isTrue = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input! Please choose again.");
+                    }
+                }
 
             }
             // I would say randomly (with rarities in mind) pick 3 cards for the user to choose from
