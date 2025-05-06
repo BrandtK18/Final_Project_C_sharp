@@ -30,8 +30,6 @@
             lootSystem.DirectGainCard(0); // Dagger
             lootSystem.DirectGainCard(5); // Apple
             lootSystem.DirectGainCard(5); // Apple
-            lootSystem.DirectGainCard(6); // Mango
-            lootSystem.DirectGainCard(6); // Mango
 
             while (p.Health > 0)
             {
