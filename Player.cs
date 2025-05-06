@@ -16,7 +16,26 @@
         }
         private static void Reshuffle() //puts random discards back into cards
         {
+<<<<<<< Updated upstream
             while(cards.Size > 0)
+=======
+            HealthMax = healthMax;
+            Health = healthMax;
+            StaminaMax = staminaMax;
+            Stamina = staminaMax;
+            HandSize = handSize;
+            MonsterCount = monsterCount;
+
+            Cards = new List<Card>();
+            Discard = new List<Card>();
+            Hand = new List<Card>();
+        }
+
+        #region Card Management Methods
+        public void DrawCard() //takes card from top of cards list and puts it into hand
+        {
+            if (cards.Count <= 0)
+>>>>>>> Stashed changes
             {
                 DrawCard();
             }
@@ -87,6 +106,18 @@
                 }
                 value = stamina;
             }
+        }
+        public List<Card> Cards
+        {
+            get => cards; set => cards = value;
+        }
+        public List<Card> Discard
+        {
+            get => discard; set => discard = value;
+        }
+        public List<Card> Hand
+        {
+            get => hand; set => hand = value;
         }
         public int MonsterCount
         {
