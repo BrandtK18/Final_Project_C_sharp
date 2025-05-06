@@ -28,10 +28,9 @@
             Stamina = staminaMax;
             HandSize = handSize;
             MonsterCount = monsterCount;
-
-            cards = new List<Card>();
-            discard = new List<Card>();
-            hand = new List<Card>();
+            Cards = new List<Card>();
+            Discard = new List<Card>();
+            Hand = new List<Card>();
         }
 
         #region Card Management Methods
@@ -278,6 +277,18 @@
                     stamina = staminaMax;
                 }
             }
+        }
+        public List<Card> Cards
+        {
+            get => cards; set => cards = value;
+        }
+        public List<Card> Discard
+        {
+            get => discard; set => discard = value;
+        }
+        public List<Card> Hand
+        {
+            get => hand; set => hand = value;
         }
         public int MonsterCount
         {
