@@ -149,7 +149,7 @@
 
                   .Take(3)
                   .ToList()
-                  .ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
+                  .ForEach(Card => Console.WriteLine($"{track++}: {Card.Name} | {Card.Description} "));
                 choices = cards;
 
 

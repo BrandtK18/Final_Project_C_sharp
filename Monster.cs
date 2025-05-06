@@ -21,6 +21,10 @@ namespace Game
             Damage = damage;
             Name = name;
         }
+        public Monster(Monster m) : this(m.Name, m.Difficulty, m.Health, m.Damage)
+        {
+
+        }
 
         public int Difficulty
         {

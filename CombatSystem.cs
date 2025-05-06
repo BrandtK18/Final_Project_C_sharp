@@ -57,12 +57,16 @@ namespace Game
         public void StartCombat()
         {
             // Selecting the monster
-            int difficulty = 1;
+            int difficulty = (p.MonsterCount / 5) + 1;
+            if (difficulty > 5)
+            {
+                difficulty = 5;
+            }
 
             Monster[] difficultyArray = enemies.Where(m => m.Difficulty == difficulty).ToArray();
             int randIndex = rand.Next(0, difficultyArray.Length);
             
-            p.CurrentMonster = difficultyArray[randIndex];
+            p.CurrentMonster = new Monster(difficultyArray[randIndex]);
 
             // Connecting signals
             p.CurrentMonster.SendAttack += p.ReceiveAttack;
