@@ -1,8 +1,13 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
+
+
 using System.Xml.Linq;
 using System.Runtime.ExceptionServices;
 using System.Linq;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Game
 {
@@ -38,19 +43,27 @@ namespace Game
                 File.Create(path);
                 Console.WriteLine("File has been created. Exit game and save again to save data.");
             }
-
-            string path2 = @"SaveCardData.csv";
-            if (File.Exists(path2))
+        }
+        public static void SaveCardData(Player p, Monster m, List<Card> cards, List<Card> discard, List<Card> hand)
+        {
+            string path = @"SaveCardData.csv";
+            if (File.Exists(path))
             {
                 try
                 {
-                    using StreamWriter writer = new StreamWriter(path2);                   
+                    using StreamWriter writer = new StreamWriter(path);
                     writer.WriteLine("Cards,Discard,Hand");
-                    foreach ((Card first,Card second,Card third) in p.Cards.Zip(p.Discard,p.Hand))
-                    {
-                        writer.WriteLine(first.Name + "," + second.Name + "," + third.Name);
-                    }
 
+                    for (int i = 0; i < cards.Count; i++)
+                    {
+                        for (int j = 0; j < discard.Count; j++)
+                        {
+                            for (int k = 0; k < hand.Count; k++)
+                            {
+                                writer.WriteLine(cards[i].Name + "," + discard[j].Name + "," + hand[k].Name);
+                            }
+                        }
+                    }
                     Console.WriteLine("Card Data has been saved");
                 }
                 catch (Exception e)
@@ -61,7 +74,7 @@ namespace Game
             }
             else
             {
-                File.Create(path2);
+                File.Create(path);
                 Console.WriteLine("Card Data File has been created. Exit game and save again to save data.");
             }
         }
@@ -117,22 +130,22 @@ namespace Game
                 Console.WriteLine("Error while reading from file");
                 Console.WriteLine(e.Message);
             }
-            //string path2 = "SaveCardData.csv";
+            string path2 = "SaveCardData.csv";
 
-            //if (!File.Exists(path))
-            //{
-            //    Console.WriteLine("File does not exist");
-            //    return;
-            //}
+            if (!File.Exists(path2))
+            {
+                Console.WriteLine("File does not exist");
+                return;
+            }
 
             //try
             //{
             //    using StreamReader reader = new StreamReader(path2);
 
             //    int lineCount = GetLineCount(path2);
-            //    List<Card> cardName = new List<Card>();
-            //    List<Card> discardName = new List<Card>();
-            //    List<Card> handName = new List<Card>();
+            //    //List<Card> cardName = new List<Card>();
+            //    //List<Card> discardName = new List<Card>();
+            //    //List<Card> handName = new List<Card>();
             //    reader.ReadLine();
 
             //    for (int i = 0; i < lineCount - 1; i++)
@@ -158,6 +171,47 @@ namespace Game
             //    Console.WriteLine("Error while reading from file");
             //    Console.WriteLine(e.Message);
             //}
+        }
+
+        public static void LoadCardData(Player p, Monster m, List<Card> cards, List<Card> discard, List<Card> hand)
+        {
+            string path = "SaveCardData.csv";
+
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("File does not exist");
+                return;
+            }
+
+            try
+            {
+                using StreamReader reader = new StreamReader(path);
+                List<Card> cardName = new List<Card>();
+                List<Card> discardName = new List<Card>();
+                List<Card> handName = new List<Card>();
+                reader.ReadLine();
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    string[] cols = line.Split(',');
+                    Card cName = (Card)Convert.ChangeType(cols[0], typeof(Card));
+                    cardName.Add(cName);
+                    Card dName = (Card)Convert.ChangeType(cols[1], typeof(Card));
+                    discardName.Add(dName);
+                    Card hName = (Card)Convert.ChangeType(cols[2], typeof(Card));
+                    handName.Add(hName);
+
+                    p.Cards = cardName;
+                    p.Discard = discardName;
+                    p.Hand = handName;
+                }
+
+                Console.WriteLine("Card Data has been loaded.");
+            }
+            catch
+            {
+
+            }
         }
 
 
@@ -190,20 +244,48 @@ namespace Game
             public int MHealth { get; set; }
             public int Damage { get; set; }
             public int Difficulty { get; set; }
-
-            //public CSVWrite(int healthmax, int health, int staminaMax, int stamina, int monsterCount, string Name, int mhealth, int damage, int difficulty)
-            //{
-
-            //}
         }
         
-        public static void EncryptFile(string file)
+        public static void EncryptFile(string inFile, string outFile, string key)
         {
-            File.Encrypt(file);
+            using(Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(key);
+                aes.GenerateIV();
+                using(FileStream output = new FileStream(outFile, FileMode.Create))
+                {
+                    output.Write(aes.IV, 0, aes.IV.Length);
+
+                    using (CryptoStream cs = new CryptoStream(output, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        using (FileStream input = new FileStream(inFile, FileMode.Open))
+                        {
+                            input.CopyTo(cs);
+                        }
+                    }
+                }
+            }
         }
-        public static void DecryptFile(string file)
+        public static void DecryptFile(string inFile, string OutFile, string key)
         {
-            File.Decrypt(file);
+            using(Aes aes = Aes.Create())
+            {
+                byte[] iv = new byte[16];
+                using(FileStream input = new FileStream(inFile, FileMode.Open))
+                {
+                    input.Read(iv, 0, iv.Length);
+                    aes.Key = Encoding.UTF8.GetBytes(key);
+                    aes.IV = iv;
+
+                    using(CryptoStream cs = new CryptoStream(input, aes.CreateDecryptor(), CryptoStreamMode.Read))
+                    {
+                        using (FileStream output = new FileStream(inFile, FileMode.Open))
+                        {
+                            cs.CopyTo(output);
+                        }
+                    }
+                }
+            }
         }
     }
 }
