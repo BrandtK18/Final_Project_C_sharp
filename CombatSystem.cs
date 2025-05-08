@@ -119,6 +119,7 @@ namespace Game
                         {
                             Console.Clear();
                             SLED.SaveData(p, current);
+                            SLED.SaveCardData(p, current, p.Cards, p.Discard, p.Hand);
                             Display.AwaitInput();
                             continue;
                         }
@@ -126,6 +127,7 @@ namespace Game
                         {
                             Console.Clear();
                             SLED.LoadData(p,current);
+                            SLED.LoadCardData(p, current, p.Cards, p.Discard, p.Hand);
                             Display.AwaitInput();
                             continue;
                         }
