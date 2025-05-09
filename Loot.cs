@@ -71,11 +71,11 @@
             // Generate the loot table using the Card array and Rarity Enum (I would recommend using LINQ for selecting / sorting by rarity etc.)
             if (m.Difficulty < 2)
             {
-                cards.OrderBy(s => s.Rarity)
+                choices = cards.OrderBy(s => s.Rarity)
                     .Take(3)
-                    .ToList()
-                    .ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
-                choices = cards;
+                    .ToList();
+                    choices.ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
+                
 
 
                 while (isTrue == false)
@@ -109,12 +109,12 @@
             }
             else if (m.Difficulty >= 2 && m.Difficulty < 5)
             {
-                cards.OrderByDescending(c => c.Rarity)
+                choices = cards.OrderByDescending(c => c.Rarity)
 
-                  .Take(3)
-                  .ToList()
-                  .ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
-                choices = cards;
+                   .Take(3)
+                   .ToList();
+                  choices.ForEach(Card => Console.WriteLine($"{track++}:{Card.Name} {Card.Description} "));
+                
 
 
                 while (isTrue == false)
@@ -145,12 +145,12 @@
             }
             else
             {
-                cards.OrderByDescending(c => c.Rarity)
+                choices = cards.OrderByDescending(c => c.Rarity)
 
-                  .Take(3)
-                  .ToList()
-                  .ForEach(Card => Console.WriteLine($"{track++}: {Card.Name} | {Card.Description} "));
-                choices = cards;
+                   .Take(3)
+                   .ToList();
+                  choices.ForEach(Card => Console.WriteLine($"{track++}: {Card.Name} | {Card.Description} "));
+                
 
 
                 while (isTrue == false)
