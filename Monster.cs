@@ -85,8 +85,10 @@ namespace Game
         }
         public void Attack()
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{Name} attacked for {Damage} damage!");
             OnSendAttack(new AttackArgs(Damage));
+            Console.ResetColor();
         }
 
         // IDamagable

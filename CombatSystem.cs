@@ -82,11 +82,15 @@ namespace Game
                 for (; ; )
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Display.PrintDisplay([DisplayShortLog, Display.EmptyLine, p.CurrentMonster.PrintStats, Display.EmptyLine, p.PrintStats, p.PrintHand]);
+                    Console.ResetColor();
 
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("e -> end turn | i <index> -> card info | a -> show all cards left in deck | s -> save current game | l -> load game");
 
                     Console.Write("Enter the index of the card you want to play OR menu option: ");
+                    Console.ResetColor();
 
                     try
                     {
@@ -99,7 +103,9 @@ namespace Game
                         else if (input == "a")
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Blue;
                             p.PrintDeck();
+                            Console.ResetColor();
                             Display.AwaitInput();
                             continue;
                         }
@@ -109,7 +115,9 @@ namespace Game
                             int index = int.Parse(values[1]);
 
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                             p.PrintCardDescription(index);
+                            Console.ResetColor();
                             Display.AwaitInput();
 
                             continue;
@@ -118,8 +126,11 @@ namespace Game
                         else if (input == "s")
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             SLED.SaveData(p, current);
+                            File.Encrypt("SaveData.csv");
                             SLED.SaveCardData(p, current, p.Cards, p.Discard, p.Hand);
+                            Console.ResetColor();
                             Display.AwaitInput();
                             continue;
                         }
@@ -127,6 +138,7 @@ namespace Game
                         {
                             Console.Clear();
                             SLED.LoadData(p,current);
+                            File.Decrypt("SaveData.csv");
                             SLED.LoadCardData(p, current, p.Cards, p.Discard, p.Hand);
                             Display.AwaitInput();
                             continue;
@@ -137,7 +149,9 @@ namespace Game
 
                         if (!p.PlayCard(cardIndex, out logString))
                         {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.WriteLine("You don't have enough stamina to play that card");
+                            Console.ResetColor();
                             Display.AwaitInput();
                             continue;
                         }
@@ -154,7 +168,9 @@ namespace Game
                     }
                     catch
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid input entered");
+                        Console.ResetColor();
                         Display.AwaitInput();
                         continue;
                     }
@@ -170,8 +186,10 @@ namespace Game
                 #region Monsters Turn
 
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 p.CurrentMonster.Attack();
                 log.Add($"{p.CurrentMonster.Name} attacked for {p.CurrentMonster.Damage} damage!");
+                Console.ResetColor();
                 Display.AwaitInput();
 
                 #endregion
@@ -194,7 +212,9 @@ namespace Game
 
             // Display
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("You defeated the monster!");
+            Console.ResetColor();
             Display.AwaitInput();
 
             // Loot generation

@@ -137,40 +137,6 @@ namespace Game
                 Console.WriteLine("File does not exist");
                 return;
             }
-
-            //try
-            //{
-            //    using StreamReader reader = new StreamReader(path2);
-
-            //    int lineCount = GetLineCount(path2);
-            //    //List<Card> cardName = new List<Card>();
-            //    //List<Card> discardName = new List<Card>();
-            //    //List<Card> handName = new List<Card>();
-            //    reader.ReadLine();
-
-            //    for (int i = 0; i < lineCount - 1; i++)
-            //    {
-            //        string line = reader.ReadLine();
-            //        string[] cols = line.Split(',');
-            //        Card cName = (Card)Convert.ChangeType(cols[0], typeof(Card));
-            //        cardName.Add(cName);
-            //        Card dName = (Card)Convert.ChangeType(cols[1], typeof(Card));
-            //        discardName.Add(dName);
-            //        Card hName = (Card)Convert.ChangeType(cols[2], typeof(Card));
-            //        handName.Add(hName);
-
-
-            //        p.Cards = cardName;
-            //        p.Discard = discardName;
-            //        p.Hand = handName;
-            //    }
-            //    Console.WriteLine("Card Data has been loaded.");
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("Error while reading from file");
-            //    Console.WriteLine(e.Message);
-            //}
         }
 
         public static void LoadCardData(Player p, Monster m, List<Card> cards, List<Card> discard, List<Card> hand)
@@ -266,12 +232,12 @@ namespace Game
                 }
             }
         }
-        public static void DecryptFile(string inFile, string OutFile, string key)
+        public static void DecryptFile(string inFile, string outFile, string key)
         {
             using(Aes aes = Aes.Create())
             {
                 byte[] iv = new byte[16];
-                using(FileStream input = new FileStream(inFile, FileMode.Open))
+                using(FileStream input = new FileStream(outFile, FileMode.Open))
                 {
                     input.Read(iv, 0, iv.Length);
                     aes.Key = Encoding.UTF8.GetBytes(key);
