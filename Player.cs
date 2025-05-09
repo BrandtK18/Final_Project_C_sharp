@@ -99,13 +99,17 @@
                 if (CurrentMonster != null)
                     a.SendAttack += CurrentMonster.ReceiveAttack;
 
+                Console.ForegroundColor = ConsoleColor.Red;
                 logString = $"You did {a.Damage} damage with your {a.Name}";
+                Console.ResetColor();
             }
             else if (c is ItemCard i)
             {
                 Health += i.Health;
                 Stamina += i.Stamina;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 logString = $"You used a {i.Name} to gain {i.Health} health and {i.Stamina} stamina";
+                Console.ResetColor();
             }
             else
             {
